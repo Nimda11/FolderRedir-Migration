@@ -13,11 +13,12 @@ Should be run as a login script. Very simple purpose, it logs the current paths 
 # 1_FolderRedir_Kill.bat
 This script removes Folder Redirection related registry entries. This allows known folders paths to be changed, but it does NOT change them (2_Reset_KFL.bat actually changes the paths)
 
-**Because these registry entries are located in the HKLM registry hive, this script must be run with administrative privliges.
+**Because these registry entries are located in the HKLM registry hive, this script must be run with administrative privliges.**
 
 This script should only be run on a system when a single user is logged in, so no active terminal servers, or pc's with mulitple people logged in (hotdesks).
 
 The script looks up the SID of the logged in user, and deletes the following registry key
+
     HKLM:SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\<SID>\fdeploy\
 
 # 2_Reset_KFL.bat
@@ -26,4 +27,3 @@ This script
 2. deletes several registry entries related to KFL Migration as sometimes automatic enrollment doesn't work.
 3. Runs a GPUPDATE
 4. Stops and Restarts Explorer and OneDrive
-
