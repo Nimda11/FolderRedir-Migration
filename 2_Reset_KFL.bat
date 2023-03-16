@@ -19,11 +19,29 @@ echo This script should be run only after first running the FolderRedirect_Kill 
 echo Press any key to continue, or Ctrl+C to exit
 PAUSE >nul
 CLS
-GOTO RESETFOLDERS
-
 
 :RESETFOLDERS
 taskkill /f /im explorer.exe >nul
+
+:LOGDIR
+set LOGDIR=C:\IT_Admin\SpecialFolders
+if not exist "%LOGDIR%" mkdir "%LOGDIR%" >nul
+
+:DATETIME
+set CUR_YYYY=%date:~10,4%
+set CUR_MM=%date:~4,2%
+set CUR_DD=%date:~7,2%
+set CUR_HH=%time:~0,2%
+if %CUR_HH% lss 10 (set CUR_HH=0%time:~1,1%)
+set CUR_NN=%time:~3,2%
+set CUR_SS=%time:~6,2%
+set TIME_DATE=%CUR_YYYY%-%CUR_MM%-%CUR_DD%_%CUR_HH%-%CUR_NN%-%CUR_SS%
+
+:BACKUPREG
+reg export "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" "%LOGDIR%\%TIME_DATE%_%UserName%_ShellFolders.reg" >nul
+reg export "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" "%LOGDIR%\%TIME_DATE%_%UserName%_UserShellFolders.reg" >nul
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /f >nul
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /f >nul
 
 :APPDATA
 SET FOLDER=Appdata\Roaming
@@ -103,7 +121,6 @@ GOTO:EOF
 
 :ONEDRIVE_KFL_RESET
 
-
 powershell -command "Get-ItemPropertyValue -path HKCU:SOFTWARE\Microsoft\OneDrive\ -name OneDriveTrigger"
 reg DELETE HKCU\Software\Microsoft\OneDrive\Accounts\Business1\ /v KfmIsDoneSilentOptIn /F >nul
 reg ADD HKCU\Software\Microsoft\OneDrive\Accounts\Business1\ /v KfmIsDoneSilentOptIn /t REG_DWORD /d 0 /F >nul
@@ -117,9 +134,7 @@ START "" explorer.exe >nul
 
 taskkill /f /im onedrive.exe >nul
 gpupdate /force >nul
-set LOGDIR=C:\IT_Admin\SpecialFolders
-if not exist "%LOGDIR%" mkdir "%LOGDIR%" >nul
-powershell.exe -command "$var = Get-ItemPropertyValue -path HKCU:SOFTWARE\Microsoft\OneDrive\ -name OneDriveTrigger ; Set-Content -Path $env:LOGDIR\ODPath.txt  -Value $var" >nul
+powershell.exe -command "$var = Get-ItemPropertyValue -path HKCU:SOFTWARE\Microsoft\OneDrive\ -name OneDriveTrigger ; Set-Content -Path $env:LOGDIR\ODPath.txt -Value $var" >nul
 set /p fODPATH=<%LOGDIR%\ODPath.txt
 START "" "%fODPATH%"
 
