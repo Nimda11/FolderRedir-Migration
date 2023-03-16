@@ -25,7 +25,7 @@ The script looks up the SID of the logged in user, and deletes the following reg
 This script
 1. resets the paths of all possible redirected folders for the logged in user.
     - Deletes both "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" and "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" keys
-    - Keys are backed up to C:\\IT_Admin\\SpecialFolders\\%DateTime%_%UserName%_*\<keyname\>*.reg prior to deletion.
+    - Keys are backed up to C:\\IT_Admin\\SpecialFolders\\%DateTime%\_%UserName%_*\<keyname\>*.reg prior to deletion.
 2. deletes several registry entries related to KFL Migration as sometimes automatic enrollment doesn't work.
 3. Runs a GPUPDATE
 4. Stops and Restarts Explorer and OneDrive
