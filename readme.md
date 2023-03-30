@@ -11,7 +11,9 @@ Not tested against 32bit OS's or Servers.
 Should be run as a login script. Very simple purpose, it logs the current paths for the Pictures, Documents, and Desktop folders every time a user logs in to C:\IT_Admin\SpecialFolders. The main point being that a technician can find these paths later in case we need to "recover" user documents. Can be deployed as a scheduled task, or preferable as a login script via the users AD Account or GPO.
 
 # 1_FolderRedir_Kill.bat
-This script removes Folder Redirection related registry entries. This allows known folders paths to be changed, but it does NOT change them (2_Reset_KFL.bat actually changes the paths)
+This script 
+* Removes Folder Redirection related registry entries. This allows known folders paths to be changed, but it does NOT change them (2_Reset_KFL.bat actually changes the paths)
+* Disables Native Windows Offline Files 
 
 **Because these registry entries are located in the HKLM registry hive, this script must be run with administrative privliges.**
 
